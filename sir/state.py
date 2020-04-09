@@ -9,11 +9,12 @@ class State:
         self.Dead = 0
         self.Population = Population - self.Dead
         self.people = []
+        self.unimportant = []
 
     def __str__(self):
         return "{} {} {} {} {}".format(self.Susceptible, self.Asymptomatic_Inf, self.Symptomatic_Inf, self.Recovered, self.Dead)
 
-    # def __init__(self, Population, Recovered, Dead, Symptomatic_Inf, Asymptomatic_Inf):
+    # def defined_init(self, Population, Recovered, Dead, Symptomatic_Inf, Asymptomatic_Inf):
     #     self.Asymptomatic_Inf = Asymptomatic_Inf
     #     self.Symptomatic_Inf = Symptomatic_Inf
     #     self.Recovered = Recovered

@@ -24,8 +24,8 @@ def setup():
     for state_name, state in parameters.map.items():
         for i in range(state.Population):
             person = Person(state_name)
-            state.people.append(len(people))
-            people.append(person)
+            state.people.append(person)
+            # people.append(person)
     print("State", "Susceptible", "Asymptomatic_Inf", "Symptomatic_Inf", "Recovered", "Dead")
 
 
@@ -33,17 +33,17 @@ def setup():
 def infect():
     for state_name, state in map.items():
         catch = np.random.binomial(1, parameters.probCatch, size=len(state.people))
-        for p, i in zip(catch, state.people):
-            if people[i].becomes_infected(p):
-                people[i].get_infected()
-                state.changeStatus(Status.Susceptible, people[i].status)
+        for p, person in zip(catch, state.people):
+            if person.becomes_infected(p):
+                person.get_infected()
+                state.changeStatus(Status.Susceptible, person.status)
             else:
-                old_status = people[i].status
-                changed = people[i].proceed_time()
+                old_status = person.status
+                changed = person.proceed_time()
                 if changed:
-                    state.changeStatus(old_status, people[i].status)
-        for p, i in zip(catch, state.people):
-            people[i].update()
+                    state.changeStatus(old_status, person.status)
+        for person in state.people:
+            person.update()
 
 def export_info(i):
     for state_name, state in map.items():
