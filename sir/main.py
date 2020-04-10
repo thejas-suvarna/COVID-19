@@ -13,7 +13,11 @@ people = []
 def main():
     file1 = open('data.csv', 'w', newline='')
     mainwriter = csv.writer(file1, delimiter="\t")
-    mainwriter.writerow(["time", "State", "Susceptible", "Asymptomatic_Inf", "Symptomatic_Inf", "Recovered", "Dead"])
+    mainwriter.writerow(["time", "Susceptible", "Asymptomatic_Inf", "Symptomatic_Inf", "Total_Inf", "Recovered", "Dead"])
+
+    people_file = open('people.csv', 'w', newline='')
+    peoplewriter = csv.writer(people_file, delimiter="\t")
+    peoplewriter.writerow(["status", "state", "risk", "environment", "behavior"])
     # define_map()
     setup() #put x number of people in each state
 
@@ -25,7 +29,10 @@ def main():
         infect() #depending on probability, connect/infect
         export_info(i+1, mainwriter)
 
-    close()
+    mainwriter.writerow([])
+    mainwriter.writerow(["status", "state", "risk", "environment", "behavior"])
+
+    close(mainwriter)
 
 
 def setup():
@@ -56,20 +63,17 @@ def infect():
 def export_info(i, file):
     for state_name, state in map.items():
         array = state.export()
-        array.insert(0, state_name)
         array.insert(0, i)
         file.writerow(array)
 
-        print(i, state_name, state)
+        print(i, state)
         # state.print_info()
 
-def close():
-    with open('people.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter="\t")
+def close(writer):
         for state_name, state in map.items():
             for person in state.people:
                 # print(person.export())
-                spamwriter.writerow(person.export())
+                writer.writerow(person.export())
 
 
 

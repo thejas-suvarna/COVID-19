@@ -9,8 +9,9 @@ class Person:
     def __init__(self, state):
         self.status = Status.Susceptible
         self.state = state
+        self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
         self.environment = np.random.normal(5, 1.0)
-        self.behavior = np.random.normal(5, 1.0)
+        self.behavior = np.random.normal(2, 1.0) if self.risk == 0.0001 else np.random.normal(5.5, 1.0)
         self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
@@ -22,12 +23,9 @@ class Person:
                                        self.behavior)
 
     def export(self):
-        return [self.status, self.state, self.environment, self.behavior]
-            # "{}\t{}\t{}\t{}".format(self.status, self.state, self.environment,
-            #                            self.behavior)
+        return [self.status, self.state, self.risk, self.environment, self.behavior]
 
 
-    # def __init__(self, status, state, environment, behavior):
     def scale(self, var):
         return (var/40)+0.8
 
