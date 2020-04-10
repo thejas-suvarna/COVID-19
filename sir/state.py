@@ -14,6 +14,9 @@ class State:
     def __str__(self):
         return "{} {} {} {} {}".format(self.Susceptible, self.Asymptomatic_Inf, self.Symptomatic_Inf, self.Recovered, self.Dead)
 
+    def export(self):
+        return "{}\t{}\t{}\t{}\t{}".format(self.Susceptible, self.Asymptomatic_Inf, self.Symptomatic_Inf, self.Recovered,
+                                       self.Dead)
     # def defined_init(self, Population, Recovered, Dead, Symptomatic_Inf, Asymptomatic_Inf):
     #     self.Asymptomatic_Inf = Asymptomatic_Inf
     #     self.Symptomatic_Inf = Symptomatic_Inf

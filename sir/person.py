@@ -21,18 +21,24 @@ class Person:
         return "{} {} {} {}".format(self.status, self.state, self.environment,
                                        self.behavior)
 
+    def export(self):
+        return [self.status, self.state, self.environment, self.behavior]
+            # "{}\t{}\t{}\t{}".format(self.status, self.state, self.environment,
+            #                            self.behavior)
+
+
     # def __init__(self, status, state, environment, behavior):
     def scale(self, var):
         return (var/40)+0.8
 
     def calc_prob_meet_Immune(self):
-        return (map[self.state].Recovered / map[self.state].Population) * self.exposure_multiplier
+        return ((map[self.state].Recovered / map[self.state].Population) * self.exposure_multiplier)
 
     def calc_prob_meet_Asymptomatic(self):
-        return map[self.state].Asymptomatic_Inf / map[self.state].Population * self.exposure_multiplier
+        return ((map[self.state].Asymptomatic_Inf / map[self.state].Population) * self.exposure_multiplier)
 
     def calc_prob_meet_Symptomatic(self):
-        return map[self.state].Symptomatic_Inf / map[self.state].Population * self.exposure_multiplier
+        return ((map[self.state].Symptomatic_Inf / map[self.state].Population) * self.exposure_multiplier)
 
     def becomes_infected(self, catch):
         prob_meet = 0.5 if not self.probMeetSymptomatic and not self.probMeetAsymptomatic else self.probMeetAsymptomatic + self.probMeetSymptomatic

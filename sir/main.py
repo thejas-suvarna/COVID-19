@@ -5,6 +5,7 @@ from state import State
 from status import Status
 import csv
 import numpy as np
+import pickle
 
 people = []
 
@@ -53,9 +54,12 @@ def export_info(i):
         # state.print_info()
 
 def close():
-    for state_name, state in map.items():
-        for person in state.people:
-            print(person)
+    with open('people.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter="\t")
+        for state_name, state in map.items():
+            for person in state.people:
+                # print(person.export())
+                spamwriter.writerow(person.export())
 
 
 

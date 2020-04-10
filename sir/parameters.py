@@ -21,6 +21,6 @@ percentSymptomatic = 0.4
 
 
 map = {
-    "MI": State(8000000),
+    "MI": State(80000),
     # "OH": State(400000)
 }
