@@ -11,7 +11,7 @@ class Person:
         self.state = state
         self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
         self.environment = np.random.normal(5, 1.0)
-        self.behavior = np.random.normal(2, 1.0) if self.risk == 0.0001 else np.random.normal(5.5, 1.0)
+        self.behavior = np.random.normal(2, 1.0) if self.risk == 0.0001 else np.random.normal(7, 1.0)
         self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
@@ -39,7 +39,7 @@ class Person:
         return ((map[self.state].Symptomatic_Inf / map[self.state].Population) * self.exposure_multiplier)
 
     def becomes_infected(self, catch):
-        prob_meet = 0.1 if not self.probMeetSymptomatic and not self.probMeetAsymptomatic else self.probMeetAsymptomatic + self.probMeetSymptomatic
+        prob_meet = 0.1 if not self.probMeetSymptomatic and not self.probMeetAsymptomatic and not self.probMeetImmune else self.probMeetAsymptomatic + self.probMeetSymptomatic
         get_infected = np.random.binomial(1, catch*prob_meet)
         return get_infected and self.status == Status.Susceptible
 
