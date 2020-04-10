@@ -19,6 +19,8 @@ def main():
         infect() #depending on probability, connect/infect
         export_info(i+1)
 
+    close()
+
 
 def setup():
     for state_name, state in parameters.map.items():
@@ -49,6 +51,12 @@ def export_info(i):
     for state_name, state in map.items():
         print(i, state_name, state)
         # state.print_info()
+
+def close():
+    for state_name, state in map.items():
+        for person in state.people:
+            print(person)
+
 
 
 main()

@@ -17,6 +17,10 @@ class Person:
         self.probMeetSymptomatic = self.calc_prob_meet_Symptomatic()
         self.daysLeft = 0
 
+    def __str__(self):
+        return "{} {} {} {}".format(self.status, self.state, self.environment,
+                                       self.behavior)
+
     # def __init__(self, status, state, environment, behavior):
     def scale(self, var):
         return (var/40)+0.8

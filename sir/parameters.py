@@ -14,7 +14,7 @@ from state import State
 probCatch = 0.3
 timeAsymptomatic = 14
 timeSymptomatic = 10
-numDays = 160
+numDays = 60
 symptomDeathRate = 0.015
 percentSymptomatic = 0.4
 
