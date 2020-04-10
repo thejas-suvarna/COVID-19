@@ -11,14 +11,19 @@ people = []
 
 
 def main():
+    file1 = open('data.csv', 'w', newline='')
+    mainwriter = csv.writer(file1, delimiter="\t")
+    mainwriter.writerow(["time", "State", "Susceptible", "Asymptomatic_Inf", "Symptomatic_Inf", "Recovered", "Dead"])
     # define_map()
     setup() #put x number of people in each state
 
-    export_info(0)
+
+
+    export_info(0, mainwriter)
 
     for i in range(parameters.numDays):
         infect() #depending on probability, connect/infect
-        export_info(i+1)
+        export_info(i+1, mainwriter)
 
     close()
 
@@ -29,7 +34,7 @@ def setup():
             person = Person(state_name)
             state.people.append(person)
             # people.append(person)
-    print("State", "Susceptible", "Asymptomatic_Inf", "Symptomatic_Inf", "Recovered", "Dead")
+
 
 
 
@@ -45,11 +50,16 @@ def infect():
                 changed = person.proceed_time()
                 if changed:
                     state.changeStatus(old_status, person.status)
-        for person in state.people:
             person.update()
 
-def export_info(i):
+
+def export_info(i, file):
     for state_name, state in map.items():
+        array = state.export()
+        array.insert(0, state_name)
+        array.insert(0, i)
+        file.writerow(array)
+
         print(i, state_name, state)
         # state.print_info()
 

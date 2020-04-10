@@ -11,7 +11,7 @@ class Person:
         self.state = state
         self.environment = np.random.normal(5, 1.0)
         self.behavior = np.random.normal(5, 1.0)
-        self.exposure_multiplier = self.scale(self.environment) * self.scale(self.behavior)
+        self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
         self.probMeetSymptomatic = self.calc_prob_meet_Symptomatic()
@@ -41,7 +41,7 @@ class Person:
         return ((map[self.state].Symptomatic_Inf / map[self.state].Population) * self.exposure_multiplier)
 
     def becomes_infected(self, catch):
-        prob_meet = 0.5 if not self.probMeetSymptomatic and not self.probMeetAsymptomatic else self.probMeetAsymptomatic + self.probMeetSymptomatic
+        prob_meet = 0.1 if not self.probMeetSymptomatic and not self.probMeetAsymptomatic else self.probMeetAsymptomatic + self.probMeetSymptomatic
         get_infected = np.random.binomial(1, catch*prob_meet)
         return get_infected and self.status == Status.Susceptible
 
@@ -54,12 +54,12 @@ class Person:
 
     def proceed_time(self):
         if(self.status == Status.Symptomatic_Inf or self.status == Status.Asymptomatic_Inf):
-            self.daysLeft = self.daysLeft - 1
-            if(self.daysLeft == 0 and self.status == Status.Symptomatic_Inf):
+            self.daysLeft = self.daysLeft - np.random.normal(1,1)
+            if(self.daysLeft < 0 and self.status == Status.Symptomatic_Inf):
                 dead = np.random.binomial(1, parameters.symptomDeathRate)
                 self.status = Status.Dead if dead else Status.Recovered
                 return True
-            elif(self.daysLeft == 0 and self.status == Status.Asymptomatic_Inf):
+            elif(self.daysLeft < 0 and self.status == Status.Asymptomatic_Inf):
                 self.status = Status.Recovered
                 return True
         return False
