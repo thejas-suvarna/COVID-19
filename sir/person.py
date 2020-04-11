@@ -54,7 +54,7 @@ class Person:
         if(self.status == Status.Symptomatic_Inf or self.status == Status.Asymptomatic_Inf):
             self.daysLeft = self.daysLeft - np.random.normal(1,1)
             if(self.daysLeft < 0 and self.status == Status.Symptomatic_Inf):
-                dead = np.random.binomial(1, parameters.symptomDeathRate)
+                dead = np.random.binomial(1, self.risk)
                 self.status = Status.Dead if dead else Status.Recovered
                 return True
             elif(self.daysLeft < 0 and self.status == Status.Asymptomatic_Inf):

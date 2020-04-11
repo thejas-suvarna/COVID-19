@@ -47,6 +47,8 @@ def setup():
 
 def infect():
     for state_name, state in map.items():
+        if state.Asymptomatic_Inf == 0 and state.Symptomatic_Inf == 0 and state.Dead > 0:
+            break
         catch = np.random.binomial(1, parameters.probCatch, size=len(state.people))
         for p, person in zip(catch, state.people):
             if person.becomes_infected(p):
