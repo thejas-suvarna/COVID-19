@@ -9,9 +9,11 @@ class Person:
     def __init__(self, state):
         self.status = Status.Susceptible
         self.state = state
-        self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
+        # self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
+        self.risk = 0.015
         self.environment = np.random.normal(5, 1.0)
-        self.behavior = np.random.normal(2, 1.0) if self.risk == 0.0001 else np.random.normal(7, 1.0)
+        # self.behavior = np.random.normal(2, 1.0) if self.risk == 0.0001 else np.random.normal(7, 1.0)
+        self.behavior = np.random.normal(5, 1.0)
         self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
@@ -54,7 +56,8 @@ class Person:
         if(self.status == Status.Symptomatic_Inf or self.status == Status.Asymptomatic_Inf):
             self.daysLeft = self.daysLeft - np.random.normal(1,1)
             if(self.daysLeft < 0 and self.status == Status.Symptomatic_Inf):
-                dead = np.random.binomial(1, self.risk)
+                #dead = np.random.binomial(1, self.risk)
+                dead = np.random.binomial(1, parameters.symptomDeathRate)
                 self.status = Status.Dead if dead else Status.Recovered
                 return True
             elif(self.daysLeft < 0 and self.status == Status.Asymptomatic_Inf):
