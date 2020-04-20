@@ -20,6 +20,8 @@ percentSymptomatic = 0.4
 
 numDays = 100
 
+behaviorLow = 5.5
+
 
 
 

@@ -9,11 +9,12 @@ class Person:
     def __init__(self, state):
         self.status = Status.Susceptible
         self.state = state
-        # self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
-        self.risk = 0.015
+        self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
+        # self.risk = 0.015
         self.environment = np.random.normal(5, 1.0)
-        # self.behavior = np.random.normal(2, 1.0) if self.risk == 0.0001 else np.random.normal(7, 1.0)
-        self.behavior = np.random.normal(5, 1.0)
+        # self.behavior = np.random.normal(parameters.behaviorLow, 1.0) if self.risk == 0.0001 else np.random.normal(2 , 1.0)
+        self.behavior = np.random.normal(parameters.behaviorLow, 1.0) if self.risk == 0.0001 else np.random.normal(2, 1.0)
+        # self.behavior = np.random.normal(5, 1.0)
         self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
@@ -29,7 +30,7 @@ class Person:
 
 
     def scale(self, var):
-        return (var/40)+0.8
+        return (var/20)+0.75
 
     def calc_prob_meet_Immune(self):
         return ((map[self.state].Recovered / map[self.state].Population) * self.exposure_multiplier)
@@ -42,6 +43,8 @@ class Person:
 
     def becomes_infected(self, catch):
         prob_meet = 0.1 if not self.probMeetSymptomatic and not self.probMeetAsymptomatic and not self.probMeetImmune else self.probMeetAsymptomatic + self.probMeetSymptomatic
+        prob_meet = 1 if prob_meet > 1 else prob_meet
+        prob_meet = 0 if prob_meet < 0 else prob_meet
         get_infected = np.random.binomial(1, catch*prob_meet)
         return get_infected and self.status == Status.Susceptible
 

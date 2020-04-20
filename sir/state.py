@@ -7,9 +7,8 @@ class State:
         self.Symptomatic_Inf = 0
         self.Recovered = 0
         self.Dead = 0
-        self.Population = Population - self.Dead
+        self.Population = Population
         self.people = []
-        self.unimportant = []
 
     def __str__(self):
         return "{} {} {} {} {}".format(self.Susceptible, self.Asymptomatic_Inf, self.Symptomatic_Inf, self.Recovered, self.Dead)
