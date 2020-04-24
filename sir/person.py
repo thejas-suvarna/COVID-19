@@ -35,7 +35,7 @@ class Person:
 
     def risk_value(self, percentage):
         x = (0.015 - (0.1 * percentage)) / (1 - percentage)
-        return 0.000001 if x < 0 else x
+        return 0.0001 if x < 0 else x
 
     def calc_prob_meet_Immune(self):
         return ((map[self.state].Recovered / map[self.state].Population) * self.exposure_multiplier)
