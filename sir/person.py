@@ -9,13 +9,11 @@ class Person:
     def __init__(self, state):
         self.status = Status.Susceptible
         self.state = state
-        # self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
+        #Determine risk based on percentage of population that is High Risk
         self.risk = .10 if np.random.binomial(1, parameters.percentageHigh) == 1 else self.risk_value(parameters.percentageHigh)
-        # self.risk = 0.015
         self.environment = np.random.normal(5, 1.0)
-        # self.behavior = np.random.normal(parameters.behaviorLow, 1.0) if self.risk == 0.0001 else np.random.normal(2 , 1.0)
+        #Determine behavior based on risk level
         self.behavior = np.random.normal(2, 1.0) if self.risk == 0.1 else np.random.normal(parameters.behaviorLow , 1.0)
-        # self.behavior = np.random.normal(5, 1.0)
         self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
@@ -54,7 +52,6 @@ class Person:
         return get_infected and self.status == Status.Susceptible
 
 
-    ##NEED TO INSERT FUNCTION FOR DECIDING WHETHER ASYMPTOMATIC OR NOT
     def get_infected(self):
         shows_symptoms = np.random.binomial(1, parameters.percentSymptomatic)
         self.status = Status.Symptomatic_Inf if shows_symptoms else Status.Asymptomatic_Inf
@@ -77,19 +74,3 @@ class Person:
         self.probMeetImmune = self.calc_prob_meet_Immune()
         self.probMeetAsymptomatic = self.calc_prob_meet_Asymptomatic()
         self.probMeetSymptomatic = self.calc_prob_meet_Symptomatic()
-
-    # status
-    # state
-    # environment
-    # behavior
-    #
-    # probMeetImmune
-    # probMeetAsymptomatic
-    # probMeetSymptomatic
-    #environment = scale from 0 - 10 (population density)
-    #behavior = sequester level 0 - 10
-
-
-
-
-

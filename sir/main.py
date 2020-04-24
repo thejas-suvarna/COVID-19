@@ -8,7 +8,11 @@ import numpy as np
 import pickle
 import pandas as pd
 
-people = []
+
+# This file is used to run two scenarios. The first is used to run sensitivity on low risk individual behavior. The file is currently configured to run that case.
+# The second case is to run sensitivty on population that is High Risk. To run that:
+# Uncomment lines: 31, 39
+# Comment lines: 30, 38 
 
 
 def main():
@@ -22,19 +26,19 @@ def main():
     # define_map()
     setup() #put x number of people in each state
 
-    # behaviorList = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
-    percentageList = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    behaviorList = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
+    # percentageList = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
     stateData = pd.DataFrame()
     peopleData = pd.DataFrame()
 
     for behavior in percentageList:
         print(behavior)
-        # parameters.behaviorLow = behavior
-        parameters.percentageHigh = behavior
+        parameters.behaviorLow = behavior
+        # parameters.percentageHigh = behavior
 
-        stateArray = []
-        peopleArray = []
+    
+        #set column names
         stateNames = ["time", "LowBehavior", "Susceptible", "Asymptomatic_Inf", "Symptomatic_Inf", "Total_Inf", "Recovered", "Dead"]
         for i, name in enumerate(stateNames):
             stateNames[i] = str(behavior) + "-" + name
@@ -47,27 +51,15 @@ def main():
         stateDatatemp = pd.DataFrame()
         peopleDatatemp = pd.DataFrame()
 
-        stateArray = export_info(0, mainwriter, stateDatatemp)
+        stateDatatemp = export_info(0, mainwriter, stateDatatemp)
 
+        # Run the model 
         for i in range(parameters.numDays):
             infect() #depending on probability, connect/infect
             stateDatatemp = export_info(i+1, mainwriter, stateDatatemp)
-            # print(stateDatatemp)
 
-
-
-
-
+        #Write data to the dataframe
         stateDatatemp.columns = stateNames[1:]
-
-
-
-        # stateData.insert(stateData.shape[1], str(behavior) + stateNames[2], stateArray[2])
-        # stateData.insert(stateData.shape[1], str(behavior) + stateNames[3], stateArray[3])
-        # stateData.insert(stateData.shape[1], str(behavior) + stateNames[4], stateArray[4])
-        # stateData.insert(stateData.shape[1], str(behavior) + stateNames[5], stateArray[5])
-        # stateData.insert(stateData.shape[1], str(behavior) + stateNames[6], stateArray[6])
-        # stateData.insert(stateData.shape[1], str(behavior) + stateNames[7], stateArray[7])
 
         mainwriter.writerow([])
         mainwriter.writerow(["status", "state", "risk", "environment", "behavior"])
@@ -75,19 +67,14 @@ def main():
         peopleDatatemp = close(mainwriter, peopleDatatemp)
         peopleDatatemp.columns = peopleNames
 
-        # peopleDatatemp.   ([str(behavior) + "status",str(behavior) + "state",str(behavior) + "risk",str(behavior) + "environment",str(behavior) + "behavior"])
-
         stateData = pd.concat([stateData, stateDatatemp], axis=1)
         peopleData = pd.concat([peopleData, peopleDatatemp], axis=1)
 
-
+        #re-initialize each state
         reset()
 
-    stateData.to_csv('statedata_1.csv')
-    peopleData.to_csv('peopledata_1.csv')
-
-
-
+    stateData.to_csv('statedata.csv')
+    peopleData.to_csv('peopledata.csv')
 
 
 def setup():
@@ -96,26 +83,7 @@ def setup():
             person = Person(state_name)
             state.people.append(person)
             # people.append(person)
-
-
-def reset():
-    for state_name, state in parameters.map.items():
-        state.Population = len(state.people)
-        state.people = []
-        state.Asymptomatic_Inf = 0
-        state.Symptomatic_Inf = 0
-        state.Recovered = 0
-        state.Dead = 0
-        state.Susceptible = state.Population
-        for i in range(state.Population):
-            person = Person(state_name)
-            state.people.append(person)
-
-            # people.append(person)
-
-
-
-
+            
 def infect():
     for state_name, state in map.items():
         if state.Asymptomatic_Inf == 0 and state.Symptomatic_Inf == 0 and state.Dead > 0:
@@ -133,6 +101,20 @@ def infect():
             person.update()
 
 
+def reset():
+    for state_name, state in parameters.map.items():
+        state.Population = len(state.people)
+        state.people = []
+        state.Asymptomatic_Inf = 0
+        state.Symptomatic_Inf = 0
+        state.Recovered = 0
+        state.Dead = 0
+        state.Susceptible = state.Population
+        for i in range(state.Population):
+            person = Person(state_name)
+            state.people.append(person)
+
+
 def export_info(i, file, infoarray):
     for state_name, state in map.items():
         array = state.export()
@@ -146,6 +128,7 @@ def export_info(i, file, infoarray):
         print(i, state)
         return infoarray
         # state.print_info()
+    
 
 def close(writer, dataframe):
     for state_name, state in map.items():
