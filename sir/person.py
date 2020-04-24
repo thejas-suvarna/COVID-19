@@ -9,7 +9,8 @@ class Person:
     def __init__(self, state):
         self.status = Status.Susceptible
         self.state = state
-        self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
+        # self.risk = .15 if np.random.binomial(1, 0.1) == 1 else 0.0001
+        self.risk = .15 if np.random.binomial(1, parameters.percentageHigh) == 1 else self.risk_value(parameters.percentageHigh)
         # self.risk = 0.015
         self.environment = np.random.normal(5, 1.0)
         # self.behavior = np.random.normal(parameters.behaviorLow, 1.0) if self.risk == 0.0001 else np.random.normal(2 , 1.0)
@@ -31,6 +32,9 @@ class Person:
 
     def scale(self, var):
         return (var/20)+0.75
+
+    def risk_value(self, percentage):
+        return (0.015 - (0.15 * percentage)) / (1 - percentage)
 
     def calc_prob_meet_Immune(self):
         return ((map[self.state].Recovered / map[self.state].Population) * self.exposure_multiplier)

@@ -22,14 +22,15 @@ def main():
     # define_map()
     setup() #put x number of people in each state
 
-    behaviorList = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
+    # behaviorList = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
+    percentageList = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
     stateData = pd.DataFrame()
     peopleData = pd.DataFrame()
 
-    for behavior in behaviorList:
-        print(behavior)
-        parameters.behaviorLow = behavior
+    for behavior in percentageList:
+        # parameters.behaviorLow = behavior
+        parameters.percentageHigh = behavior
 
         stateArray = []
         peopleArray = []
@@ -81,8 +82,8 @@ def main():
 
         reset()
 
-    stateData.to_csv('statedata.csv')
-    peopleData.to_csv('peopledata.csv')
+    stateData.to_csv('statedata_1.csv')
+    peopleData.to_csv('peopledata_1.csv')
 
 
 
