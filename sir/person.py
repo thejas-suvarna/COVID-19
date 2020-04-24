@@ -14,7 +14,7 @@ class Person:
         # self.risk = 0.015
         self.environment = np.random.normal(5, 1.0)
         # self.behavior = np.random.normal(parameters.behaviorLow, 1.0) if self.risk == 0.0001 else np.random.normal(2 , 1.0)
-        self.behavior = np.random.normal(2, 1.0) if self.risk == 0.15 else np.random.normal(parameters.behaviorLow , 1.0)
+        self.behavior = np.random.normal(2, 1.0) if self.risk == 0.1 else np.random.normal(parameters.behaviorLow , 1.0)
         # self.behavior = np.random.normal(5, 1.0)
         self.exposure_multiplier = (self.scale(self.environment) * self.scale(self.behavior))#/(self.scale(self.environment) #+ self.scale(self.behavior)/2)
         self.probMeetImmune = self.calc_prob_meet_Immune()
