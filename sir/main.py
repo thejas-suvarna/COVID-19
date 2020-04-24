@@ -29,6 +29,7 @@ def main():
     peopleData = pd.DataFrame()
 
     for behavior in percentageList:
+        print(behavior)
         # parameters.behaviorLow = behavior
         parameters.percentageHigh = behavior
 
